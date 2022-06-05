@@ -12,21 +12,6 @@ import random
 from star import Star
 from nebula import Nebula
 
-def rms(samples: list) -> float:
-    return (np.dot(samples, samples) / len(samples)) ** 0.5
-
-def gravitate(point: tuple, origin: tuple, g: float) -> tuple:
-    delta_sqr = tuple(map(lambda o, p: ((o - p) ** 1) * np.sign(o - p), origin, point))
-    return tuple(map(
-        lambda d, p: p + g / d if not d == 0 else p, delta_sqr, point
-    ))
-
-def rand_color(base: int) -> pygame.Color:
-    return pygame.Color(
-        round(random.random() * (255 - base) + base), 
-        round(random.random() * (255 - base) + base),
-        round(random.random() * (255 - base) + base))
-
 # config vars - edit these to alter the visualizer
 FILENAME = "audio/missing.mp3"
 
@@ -44,6 +29,21 @@ SCOPE_WIDTH = 600
 SCOPE_HEIGHT = 375
 GATE = 0 # out of 1
 STAR_DECAY = 0.5 # out of 1
+
+def rms(samples: list) -> float:
+    return (np.dot(samples, samples) / len(samples)) ** 0.5
+
+def gravitate(point: tuple, origin: tuple, g: float) -> tuple:
+    delta_sqr = tuple(map(lambda o, p: ((o - p) ** 1) * np.sign(o - p), origin, point))
+    return tuple(map(
+        lambda d, p: p + g / d if not d == 0 else p, delta_sqr, point
+    ))
+
+def rand_color(base: int) -> pygame.Color:
+    return pygame.Color(
+        round(random.random() * (255 - base) + base), 
+        round(random.random() * (255 - base) + base),
+        round(random.random() * (255 - base) + base))
 
 # process audio into 1-d array of average samples
 
@@ -182,4 +182,3 @@ print(len(screens))
 for i, screen in enumerate(screens):
     print(f"Processing frame {i} of {len(screens)}")
     pygame.image.save(screen, "")
-sys.exit()
