@@ -11,10 +11,12 @@ Simply run ``` python main.py ``` in the constellatia directory to start the vis
 You can determine what audio is played/visualized by setting ```FILENAME``` to the path to an audio file.
 Currently, it runs immediately after processing, and will automatically stop after playing through the song.
 
-This repo comes with three songs in the ```audio``` folder:
+This repo comes with some songs in the ```audio``` folder:
 - <a href="https://www.youtube.com/watch?v=b6D6iGeEl1o">Deep Blue by The Midnight</a>
 - <a href="https://www.youtube.com/watch?v=cnpqLWBrNw0">Missing by Orax</a>
 - <a href="https://www.youtube.com/watch?v=9wCJPm19XYQ">Reckoner by Radiohead</a>
+- <a href="https://www.youtube.com/watch?v=lpbJJmOJLz8">Something Memorable by Kn1ght</a>
+- <a href="https://www.youtube.com/watch?v=VTJcLE_VVX8">They Might As Well Be Dead by Chris Christodoulou</a> 
 
 as well as two test files, one of a sine wave and one of a square wave.
 

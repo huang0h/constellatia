@@ -3,6 +3,7 @@
 # pip install pygame
 from pydub import AudioSegment
 import pygame
+from scipy import signal
 
 import math
 import sys
@@ -11,9 +12,10 @@ import random
 
 from star import Star
 from nebula import Nebula
+from oscilloscope import Oscilloscope
 
 # config vars - edit these to alter the visualizer
-FILENAME = "audio/missing.mp3"
+FILENAME = "audio/mightaswellbedead.wav"
 
 WINDOW_SIZE = 400
 HOP_SIZE = 100
@@ -55,12 +57,17 @@ NUM_SAMPLES = math.floor(len(audio) / 1000 * SAMPLE_RATE)
 monos: list = audio.split_to_mono()
 channel_samples: list = [mono.get_array_of_samples() for mono in monos]
 
+left_samples: list = []
+right_samples: list = []
 avg_sample: list = []
 if len(channel_samples) == 1:
     avg_sample = channel_samples[0]
+    left_samples = channel_samples[0]
+    right_samples = channel_samples[0]
 else:
     avg_sample = list(map(lambda x, y: (x + y) / 2,
                       channel_samples[0], channel_samples[1]))
+    left_samples, right_samples = channel_samples
 
 frame = 0
 MAX_AMP = 2 ** (audio.sample_width * 8 - 1)
@@ -90,6 +97,8 @@ pygame.mixer.music.play()
 screens = []
 RUNNING = True
 RECORDING = False
+
+oscope = Oscilloscope(screen, SCOPE_WIDTH, SCOPE_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, MAX_AMP)
 
 while total_elapsed * smp_per_second + WINDOW_SIZE < NUM_SAMPLES and RUNNING:
     for event in pygame.event.get():
@@ -136,6 +145,9 @@ while total_elapsed * smp_per_second + WINDOW_SIZE < NUM_SAMPLES and RUNNING:
 
     # calculate the frame data
     window = avg_sample[total_elapsed * smp_per_second : total_elapsed * smp_per_second + WINDOW_SIZE]
+    left_win = left_samples[total_elapsed * smp_per_second : total_elapsed * smp_per_second + WINDOW_SIZE]
+    right_win = right_samples[total_elapsed * smp_per_second : total_elapsed * smp_per_second + WINDOW_SIZE]
+    
     window_rms = rms(window)
     rms_prop = window_rms / MAX_AMP
     
@@ -160,15 +172,7 @@ while total_elapsed * smp_per_second + WINDOW_SIZE < NUM_SAMPLES and RUNNING:
     for neb in nebulae:
         neb.draw()
 
-    # draw the oscilloscope
-    for i, amp in enumerate(window):
-        if abs(amp / MAX_AMP) < GATE:
-            continue
-        half_win = len(window) / 2
-        x = ((i - half_win) / half_win) * SCOPE_WIDTH + (SCREEN_WIDTH / 2)
-        y = (amp / MAX_AMP * SCOPE_HEIGHT) + (SCREEN_HEIGHT / 2)
-        # (x, y) = gravitate( (x, y), mouse, gravitation)
-        pygame.draw.circle(screen, pygame.Color(255, 255, 255), (x, y), 1)
+    oscope.draw(window)
 
     pygame.display.flip()
 
@@ -181,4 +185,4 @@ pygame.mixer.quit()
 print(len(screens))
 for i, screen in enumerate(screens):
     print(f"Processing frame {i} of {len(screens)}")
-    pygame.image.save(screen, "")
+    pygame.image.save(screen, f"imgs/frame{i}.png")
