@@ -1,5 +1,7 @@
 # constellatia
-Constellatia is a simple audio visualizer built in Python.
+Constellatia is a simple audio visualizer built in Python, inspired by the stars and space in general.
+
+Demo: https://youtu.be/4_a7V3886Vs
 
 You'll need to install 
 <a href="https://www.pygame.org/wiki/GettingStarted">pygame</a> and 
