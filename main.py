@@ -1,21 +1,21 @@
 # you might need to install these:
 # pip install pydub
 # pip install pygame
+# pip install scipy
 from pydub import AudioSegment
 import pygame
-from scipy import signal
 
 import math
-import sys
 import numpy as np
 import random
 
 from star import Star
 from nebula import Nebula
 from oscilloscope import Oscilloscope
+from vector import Vectorscope
 
 # config vars - edit these to alter the visualizer
-FILENAME = "audio/mightaswellbedead.wav"
+FILENAME = "testaudio/sinetest.mp3"
 
 WINDOW_SIZE = 400
 HOP_SIZE = 100
@@ -99,7 +99,10 @@ RUNNING = True
 RECORDING = False
 
 oscope = Oscilloscope(screen, SCOPE_WIDTH, SCOPE_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, MAX_AMP)
+vscope = Vectorscope(screen, SCOPE_WIDTH, SCOPE_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, MAX_AMP)
 
+# visualizer still lags behind by small amounts - will investigate further
+# current theory is that clock tick lags a bit while music plays uninterrupted
 while total_elapsed * smp_per_second + WINDOW_SIZE < NUM_SAMPLES and RUNNING:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -173,6 +176,7 @@ while total_elapsed * smp_per_second + WINDOW_SIZE < NUM_SAMPLES and RUNNING:
         neb.draw()
 
     oscope.draw(window)
+    vscope.draw(left_win, right_win, 10)
 
     pygame.display.flip()
 
