@@ -4,7 +4,8 @@ Constellatia is a simple audio visualizer built in Python, inspired by the stars
 Demo: https://youtu.be/4_a7V3886Vs
 
 You'll need to install 
-<a href="https://www.pygame.org/wiki/GettingStarted">pygame</a> and 
+<a href="https://www.pygame.org/wiki/GettingStarted">pygame</a>,
+<a href="https://scipy.org/">scipy</a>, and 
 <a href="http://pydub.com/">pydub</a>
 in order for the visualizer to run.
 
@@ -28,7 +29,7 @@ You can configure the visualizer before running by editing the config variables 
 NOT the size of the visualizer - ```SCREEN_WIDTH``` and ```SCREEN_HEIGHT``` determine that.
 Controls:
 - p: pause/unpause the visualizer and music
-- q: prematurely end the visualizer
+- q: quit the visualizer
 - r: start/stop recording
 
 I **HIGHLY** discourage recording right now, since the current setup is super janky and I'm still working on it.
